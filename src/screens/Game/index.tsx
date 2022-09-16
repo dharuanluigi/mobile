@@ -20,11 +20,16 @@ export function Game() {
   const game = route.params as GameParamProps;
 
   const [duos, setDuos] = useState<DuoCardProps[]>([]);
-  const [isDiscordDuoSelected, setIsDiscordDuoSelected] =
-    useState("discord#0000");
+  const [isDiscordDuoSelected, setIsDiscordDuoSelected] = useState("");
 
   function handleGoBack() {
     navigation.goBack();
+  }
+
+  async function getDiscordUser(adsId: string) {
+    fetch(`http://192.168.0.104:3000/ads/${adsId}/discord`)
+      .then((response) => response.json())
+      .then((response) => setIsDiscordDuoSelected(response.discord));
   }
 
   useEffect(() => {
@@ -61,7 +66,7 @@ export function Game() {
           data={duos}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <DuoCard data={item} onConnect={() => {}} />
+            <DuoCard data={item} onConnect={() => getDiscordUser(item.id)} />
           )}
           horizontal
           style={styles.containerList}
@@ -76,7 +81,7 @@ export function Game() {
 
         <DuoMatch
           visible={isDiscordDuoSelected.length > 0}
-          discord="discord#0000"
+          discord={isDiscordDuoSelected}
           onClose={() => setIsDiscordDuoSelected("")}
         />
       </SafeAreaView>
