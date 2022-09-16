@@ -12,6 +12,7 @@ import { Background } from "../../components/Background";
 import { GameParamProps } from "../../@types/navigation";
 import { Heading } from "../../components/Heading";
 import { DuoCard, DuoCardProps } from "../../components/DuoCard";
+import { DuoMatch } from "../../components/DuoMatch";
 
 export function Game() {
   const navigation = useNavigation();
@@ -19,6 +20,8 @@ export function Game() {
   const game = route.params as GameParamProps;
 
   const [duos, setDuos] = useState<DuoCardProps[]>([]);
+  const [isDiscordDuoSelected, setIsDiscordDuoSelected] =
+    useState("discord#0000");
 
   function handleGoBack() {
     navigation.goBack();
@@ -69,6 +72,12 @@ export function Game() {
               Não há anúncios publicados ainda.
             </Text>
           )}
+        />
+
+        <DuoMatch
+          visible={isDiscordDuoSelected.length > 0}
+          discord="discord#0000"
+          onClose={() => setIsDiscordDuoSelected("")}
         />
       </SafeAreaView>
     </Background>
